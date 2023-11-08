@@ -5,25 +5,23 @@ from scipy.io.wavfile import write
 import threading
 
 freq = 44100
-def record_audio():
+import sounddevice as sd
+from scipy.io.wavfile import write
+
+def record_and_write_audio(filename, duration=7):
     freq = 44100
-    duration = 7
     recording = sd.rec(int(duration * freq), samplerate=freq, channels=2)
     print("Start")
     sd.wait()
     print("Stop")
-    return recording
-
-def write_audio(recording, filename):
+    
     write(filename, freq, recording)
     print(f"Audio written to {filename}")
 
 if __name__ == "__main__":
-    recording = record_audio()
-    filename = "rec.wav"
-    write_thread = threading.Thread(target=write_audio, args=(recording, filename))
-    write_thread.start()
-    write_thread.join()
+    output_filename = "rec.wav"  # Change this to your desired output filename
+    record_and_write_audio(output_filename)
+
 
 aai.settings.api_key = "f91d895f7c874b7883db2a4683c89a43"
 transcriber = aai.Transcriber()
