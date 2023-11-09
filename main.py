@@ -2,7 +2,9 @@ from openai import OpenAI as oa
 import assemblyai as aai
 import sounddevice as sd
 from scipy.io.wavfile import write
-import threading
+from dotenv import load_dotenv
+import requests,os
+from dotenv import load_dotenv
 
 freq = 44100
 import sounddevice as sd
@@ -29,5 +31,11 @@ transcriber = aai.Transcriber()
 #aneesh pls help :D
 transcript = transcriber.transcribe("./rec.wav")
 print(transcript.text)
-f = open("rec.txt", "w")
-f.write(transcript.text)
+mes = transcript.text
+
+def get(message, apikey, bid, id):
+    r = requests.get(
+        url=f"http://api.brainshop.ai/get?bid={bid}&key={apikey}&uid={id}&msg={message}"
+    )
+    return r.json()["cnt"]
+print(get(mes,'cU25Ss1SZg7yVZdd',169657,123145))
